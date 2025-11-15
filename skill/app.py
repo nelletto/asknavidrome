@@ -42,7 +42,7 @@ logger.addHandler(handler)
 # Get service configuration
 #
 
-logger.info('AskNavidrome 0.9!')
+logger.info('AskNavidrome 0.9 - Nelletto\'s version!')
 logger.debug('Getting configuration from the environment...')
 
 try:
