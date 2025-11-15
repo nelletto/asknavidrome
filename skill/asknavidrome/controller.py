@@ -42,7 +42,19 @@ def start_playback(mode: str, text: str, card_data: dict, track_details: Track, 
     :return: Amazon Alexa Response class
     :rtype: Response
     """
-
+    metadata = AudioItemMetadata(
+        title=track_details.title,
+        subtitle=track_details.artist,
+        art=display.Image(
+                content_description=track_details.title,
+                sources=[
+                    display.ImageInstance(
+                        url=track_details.cover_uri
+                    )
+                ]
+            )                                                              
+    )
+    
     if mode == 'play':
         # Starting playback
         logger.debug('In start_playback() - play mode')
@@ -67,7 +79,7 @@ def start_playback(mode: str, text: str, card_data: dict, track_details: Track, 
                         url=track_details.uri,
                         offset_in_milliseconds=track_details.offset,
                         expected_previous_token=None),
-                    metadata=add_screen_background(card_data) if card_data else None
+                    metadata=metadata
                 )
             )
         ).set_should_end_session(True)
@@ -95,7 +107,7 @@ def start_playback(mode: str, text: str, card_data: dict, track_details: Track, 
                         # if the Previous intent is used
                         offset_in_milliseconds=0,
                         expected_previous_token=track_details.previous_id),
-                    metadata=None
+                    metadata=metadata
                 )
             )
         ).set_should_end_session(True)
@@ -174,6 +186,7 @@ def enqueue_songs(api: SubsonicConnection, queue: MediaQueue, song_id_list: list
     for song_id in song_id_list:
         song_details = api.get_song_details(song_id)
         song_uri = api.get_song_uri(song_id)
+        cover_uri = api.get_cover_uri(song_id)
 
         # Create track object from song details
         new_track = Track(song_details.get('song').get('id'),
@@ -188,6 +201,7 @@ def enqueue_songs(api: SubsonicConnection, queue: MediaQueue, song_id_list: list
                           song_details.get('song').get('duration'),
                           song_details.get('song').get('bitRate'),
                           song_uri,
+                          cover_uri,
                           0,
                           None)
 

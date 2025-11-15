@@ -6,7 +6,7 @@ class Track:
                  id: str = '', title: str = '', artist: str = '', artist_id: str = '',
                  album: str = '', album_id: str = '', track_no: int = 0, year: int = 0,
                  genre: str = '', duration: int = 0, bitrate: int = 0, uri: str = '',
-                 offset: int = 0, previous_id: str = '') -> None:
+                 cover_uri = '', offset: int = 0, previous_id: str = '') -> None:
         """
         :param str id: The song ID. Defaults to ''
         :param str title: The song title. Defaults to ''
@@ -20,6 +20,7 @@ class Track:
         :param int duration: The length of the track in seconds. Defaults to 0
         :param int bitrate: The bit rate in kbps. Defaults to 0
         :param str uri: The song's URI for streaming. Defaults to ''
+        :param str cover_uri: The song's cover URI. Defaults to ''
         :param int offset: The position in the track to start playback in milliseconds. Defaults to 0
         :param str previous_id: The ID of the previous song in the playlist. Defaults to ''
         :return: None
@@ -37,5 +38,6 @@ class Track:
         self.duration: int = duration
         self.bitrate: int = bitrate
         self.uri: str = uri
+        self.cover_uri: str = cover_uri
         self.offset: int = offset
         self.previous_id: str = previous_id

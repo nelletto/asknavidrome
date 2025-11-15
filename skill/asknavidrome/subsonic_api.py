@@ -363,6 +363,31 @@ class SubsonicConnection:
 
         return uri
 
+    def get_cover_uri(self, id: str) -> str:
+        """Create a URI for a given song
+
+        Creates a URI for the song represented by the given ID.  Authentication details are
+        embedded in the URI
+
+        :param str id: A song ID
+        :return: A properly formatted URI
+        :rtype: str
+        """
+
+        self.logger.debug('In function get_song_uri()')
+
+        salt = secrets.token_hex(16)
+        auth_token = md5(self.passwd.encode() + salt.encode())
+
+        # This creates a multiline f string, uri contains a single line with both
+        # f strings.
+        uri = (
+            f'{self.server_url}:{self.port}{self.api_location}/getCoverArt?v={self.api_version}&c=AskNavidrome&u='
+            f'{self.user}&s={salt}&t={auth_token.hexdigest()}&id={id}'
+        )
+
+        return uri
+
     def star_entry(self, id: str, mode: str) -> None:
         """Add a star to the given entity
 
